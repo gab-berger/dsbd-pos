@@ -1,1 +1,0 @@
-ls: não foi possível acessar 'bla': Arquivo ou diretório inexistente
