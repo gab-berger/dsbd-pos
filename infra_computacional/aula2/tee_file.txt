@@ -1,0 +1,10 @@
+total 5
+drwx------ 2 gfberger espinf 2 mar 16 08:48 Área de trabalho
+drwx------ 2 gfberger espinf 2 mar 15 22:17 Documentos
+drwx------ 2 gfberger espinf 2 mar 15 19:13 Downloads
+drwx------ 2 gfberger espinf 2 mar  2 10:52 Imagens
+drwx------ 2 gfberger espinf 2 mar  2 10:52 Modelos
+drwx------ 2 gfberger espinf 2 mar  2 10:52 Música
+drwx------ 4 gfberger espinf 4 mar 16 10:01 projects
+drwx------ 2 gfberger espinf 2 mar  2 10:52 Público
+drwx------ 2 gfberger espinf 2 mar  2 10:52 Vídeos
