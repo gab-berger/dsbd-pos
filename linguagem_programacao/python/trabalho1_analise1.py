@@ -147,13 +147,3 @@ print(n_aluno)
 print(f'\nComparação do número de alunos matriculados (semestre_hib_22_2 / semestre_hib_22_2):')
 print(n_aluno['semestre_hib_22_2'] / n_aluno['semestre_hib_22_1'])
 print('\n*Como os dados do segundo semestre de 2022 constam com o semestre em andamento,\nnão há como comparar as notas e taxas de cancelamento e reprovação como anteriormente.')
-
-gr12 = r12.plot(kind='bar')
-gr12.bar_label(gr12.containers[0],size=10)
-plt.show()
-
-gr12 = r12.plot(kind='line')
-points = gr12.get_lines()[0].get_xydata()
-for point in points:
-    gr12.text(point[0], point[1], f'{point[1]:.2f}', fontsize=10, ha='center', va='bottom')
-plt.show()
