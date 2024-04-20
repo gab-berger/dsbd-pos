@@ -1,6 +1,7 @@
 import pandas as pd
+import matplotlib.pyplot as plt
 
-df = pd.read_csv('historico-alg1_SIGA_ANONIMIZADO.csv', sep=',')
+df = pd.read_csv('linguagem_programacao/python/historico-alg1_SIGA_ANONIMIZADO.csv', sep=',')
 
 df['status'] = df['status'].str.replace('Reprovado','R-freq')
 
@@ -145,3 +146,7 @@ print(n_aluno)
 print(f'\nComparação do número de alunos matriculados (semestre_hib_22_2 / semestre_hib_22_2):')
 print(n_aluno['semestre_hib_22_2'] / n_aluno['semestre_hib_22_1'])
 print('\n*Como os dados do segundo semestre de 2022 constam com o semestre em andamento,\nnão há como comparar as notas e taxas de cancelamento e reprovação como anteriormente.')
+
+gr12 = r12.plot(kind='bar')
+gr12.bar_label(gr12.containers[0],size=10)
+plt.show()
