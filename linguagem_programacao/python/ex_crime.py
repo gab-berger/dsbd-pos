@@ -6,8 +6,10 @@ df = pd.read_csv('/home/espinf/gfberger/Downloads/SacramentocrimeJanuary2006.csv
 #print(df.info())
 #print(df.head())
 #print(df.describe())
-df['date'] = df['cdatetime'].str.split(' ').str[0]
-df['date'] = pd.to_datetime(df['date'],dayfirst=True,infer_datetime_format=True,format="mixed")
+df['datetime'] = pd.to_datetime(df['cdatetime'])
+df['date'] = df['datetime'].dt.date
+#df['date'] = df['cdatetime'].str.split(' ').str[0]
+#df['date'] = pd.to_datetime(df['date'],dayfirst=True,infer_datetime_format=True,format="mixed")
 df['month'] = df['date'].dt.month
 
 print('1. Qual a quantidade de crimes por data?')
