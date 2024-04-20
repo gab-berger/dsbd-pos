@@ -1,7 +1,7 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 
-df = pd.read_csv('linguagem_programacao/python/historico-alg1_SIGA_ANONIMIZADO.csv', sep=',')
+df = pd.read_csv('linguagem_programacao/dbs/historico-alg1_SIGA_ANONIMIZADO.csv', sep=',')
 
 df = df[df['tipo'] != 'EQUIVALENCIA']
 df['status'] = df['status'].str.replace('Reprovado','R-freq')
