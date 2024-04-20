@@ -1,7 +1,7 @@
 import pandas as pd
 import warnings
 warnings.filterwarnings('ignore')
-df = pd.read_csv('/home/espinf/gfberger/Downloads/SacramentocrimeJanuary2006.csv')
+df = pd.read_csv('linguagem_programacao/dbs/SacramentocrimeJanuary2006.csv')
 
 #print(df.info())
 #print(df.head())

@@ -1,4 +1,4 @@
-csv = open('dsbd_trab1.csv')
+csv = open('linguagem_programacao/dbs/dsbd_trab1.csv')
 df = csv.read()
 linhas = df.split("\n")
 linha1 = linhas[0]
