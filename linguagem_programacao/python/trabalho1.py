@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 
 df = pd.read_csv('linguagem_programacao/python/historico-alg1_SIGA_ANONIMIZADO.csv', sep=',')
 
+df = df[df['tipo'] != 'EQUIVALENCIA']
 df['status'] = df['status'].str.replace('Reprovado','R-freq')
 
 df['rep_nota'] = df['status'] == 'R-nota'
@@ -35,10 +36,10 @@ rep_nota = df[df['status']=='R-nota']
 rep_freq = df[df['status']=='R-freq']
 
 # 1. Qual é a média de nota dos aprovados (no período total e por ano)?
-r11 = aprovados['nota'].mean()
+r11 = aprovados['nota'].mean().round(2)
 print('\n1. Média de nota dos aprovados no período total:')
 print(r11)
-r12 = aprovados.groupby('ano')['nota'].mean()
+r12 = aprovados.groupby('ano')['nota'].mean().round(2)
 print('\n1. Média de nota dos aprovados por ano: ')
 print(r12)
 
@@ -149,4 +150,10 @@ print('\n*Como os dados do segundo semestre de 2022 constam com o semestre em an
 
 gr12 = r12.plot(kind='bar')
 gr12.bar_label(gr12.containers[0],size=10)
+plt.show()
+
+gr12 = r12.plot(kind='line')
+points = gr12.get_lines()[0].get_xydata()
+for point in points:
+    gr12.text(point[0], point[1], f'{point[1]:.2f}', fontsize=10, ha='center', va='bottom')
 plt.show()
