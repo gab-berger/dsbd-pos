@@ -2,8 +2,7 @@ import time
 from multiprocessing import Process
 
 def pi_naive(start, end, step):
-    print('Start: ', str(start))
-    print('End: ', str(end))
+    print('Start Step:', str(start),'|', 'End Step:', str(end))
     sum = 0.0
 
     for i in range(start, end):
@@ -12,21 +11,28 @@ def pi_naive(start, end, step):
     print(sum)
 
 if __name__ == '__main__':
-    num_steps = 1_000_000_00
-    sums = 0.0
+    PROCS = 4
+
+    num_steps = 100_000_000
     step = 1.0/num_steps
+    proc_size = num_steps // PROCS
     tic = time.time()
 
-    proc_n = 4
-    for id in range(proc_n):
+    sums = 0.0
+    workers = []
+    for id in range(PROCS):
         id_sum = 0.0
-        id_start = int(id*proc_n//step)
-        id_end = int(((id+1)*proc_n//step)-1)
+        step_start = id*proc_size
+        step_end = (id+1)*proc_size-1
         
-        p = Process(target=pi_naive, args=(id_start, id_end, step,))
-        p.start()
-        
+        woker = Process(target=pi_naive, args=(step_start, step_end, step,))
+        workers.append(woker)
+        woker.start()
+    
+    for p in workers:
+        p.join()
+
     toc = time.time()
     # pi = step * sums
     # print('Valor Pi: %.10f'%pi)
-    # print('Tempo Pi: %.8f s'%(toc - tic))
+    print('Tempo Pi: %.8f s'%(toc - tic))
