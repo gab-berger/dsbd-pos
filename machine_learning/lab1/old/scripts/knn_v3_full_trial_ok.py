@@ -15,7 +15,7 @@ from sklearn import preprocessing
 from sklearn.model_selection import train_test_split
 from sklearn import preprocessing
 
-from digits import gen_img_matrix
+from old.scripts.digits import gen_img_matrix
 
 
 def main(img_matrix, knn_met):
@@ -45,14 +45,14 @@ def main(img_matrix, knn_met):
 
 def processa_combinacao(knn_met, knum, x, y):
         start_time = time.time()
-        print('START',knn_met,'knn =',knum,'matrix',x,'x',y,'...')
+        print('START',knn_met,'k',knum,'matrix',x,'x',y,'...')
 
         img_matrix = gen_img_matrix(path_images='digits/data', X=x, Y=y)
         acc = main(img_matrix, knn_met)
         
         end_time = time.time()
-        elapsed_time = round(end_time - start_time, 4)
-        print ('DONE',knn_met,'knn =',knum,'matrix',x,'x',y,'in',elapsed_time,'s | acc:',acc)
+        elapsed_time = round(end_time - start_time, 2)
+        print ('DONE',knn_met,'k',knum,'matrix',x,'x',y,'|',elapsed_time,'s | acc:',acc)
     
         return {'knn_met': knn_met,'knum': knum, 'x': x, 'y': y, 'acc': acc, 'time': elapsed_time}
 
@@ -61,33 +61,32 @@ if __name__ == "__main__":
         knn_met_list = [
                 'minkowski',
                 'euclidean',
-                'manhattan',
-                'chebyshev'
+                #'manhattan',
+                #'chebyshev'
         ]
-        knum_start = 3
-        knum_finish = 18
-        axis_start = 5
-        axis_finish = 101
-        axis_step = 5
 
         with ProcessPoolExecutor(max_workers=12) as executor:
                 futures = []
                 for metric in knn_met_list:
-                        for knum in range(knum_start, knum_finish, 2):
-                                for x in range(axis_start, axis_finish, axis_step):
-                                        for y in range(axis_start, axis_finish, axis_step):
+                        for knum in range(3, 20, 2):
+                                for x in range(50, 71, 1):
+                                        for y in range(15, 36, 1):
                                                 futures.append(executor.submit(processa_combinacao, metric, knum, x, y))
-
 
                 results = []
                 for future in as_completed(futures):
                         results.append(future.result())
         
         df = pd.DataFrame(results)
+        for column in ['knum','x','y','acc','time']:
+                df[column] = pd.to_numeric(df[column],errors='coerce')
+        df = df.sort_values(by=['acc','time'], ascending=[False,True])
 
-        print(df.sort_values(by='acc', ascending=False).head(20))
+        print(df.head(20))
+        print(df.tail(20))
+
         final_time = datetime.now().strftime('%Y%m%d_%H%M')
-        df.to_csv('prediction_results'+final_time+'.csv', index=False, sep=',')
+        df.to_csv('prediction_results_'+final_time+'.csv', index=False, sep=',')
 
         big_end_time = time.time()
         elapsed_time = big_end_time - big_start_time

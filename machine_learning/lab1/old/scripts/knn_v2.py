@@ -13,7 +13,7 @@ from sklearn import preprocessing
 from sklearn.model_selection import train_test_split
 from sklearn import preprocessing
 
-from digits import gen_img_matrix
+from old.scripts.digits import gen_img_matrix
 
 
 def main(img_matrix):

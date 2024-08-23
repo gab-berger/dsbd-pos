@@ -13,9 +13,8 @@ from sklearn.metrics import confusion_matrix
 from sklearn.metrics import classification_report
 from sklearn import preprocessing
 from sklearn.model_selection import train_test_split
-from sklearn import preprocessing
 
-from digits import gen_img_matrix
+from old.scripts.digits import gen_img_matrix
 
 
 def main(img_matrix, knn_met):
@@ -43,7 +42,7 @@ def main(img_matrix, knn_met):
 
         return acc
 
-def processa_combinacao(knn_met, knum, img_matrix):
+def processa_combinacao(knn_met, knum, img_matrix, x, y):
         start_time = time.time()
         print('START',knn_met,'k',knum,'...')
 
@@ -53,25 +52,25 @@ def processa_combinacao(knn_met, knum, img_matrix):
         elapsed_time = round(end_time - start_time, 2)
         print ('DONE',knn_met,'k',knum,'|',elapsed_time,'s | acc:',acc)
     
-        return {'knn_met': knn_met,'knum': knum, 'x': x, 'y': y, 'acc': acc, 'time': elapsed_time}
+        return {'knn_met': knn_met,'knum': knum, 'x': x, 'y': y, 'acc': acc*1000, 'time': elapsed_time}
 
 if __name__ == "__main__":
         big_start_time = time.time()
         knn_met_list = [
                 'minkowski',
                 'euclidean',
-                #'manhattan',
+                'manhattan',
                 #'chebyshev'
         ]
 
         with ProcessPoolExecutor(max_workers=12) as executor:
                 futures = []
-                for x in range(40, 61, 1):
-                        for y in range(5, 26, 1):
+                for x in range(60, 61, 1):
+                        for y in range(25, 26, 1):
                                 img_matrix = gen_img_matrix(path_images='digits/data', X=x, Y=y)
                                 for metric in knn_met_list:
-                                        for knum in range(11, 18, 2):
-                                                futures.append(executor.submit(processa_combinacao, metric, knum, img_matrix))
+                                        for knum in range(3, 4, 2):
+                                                futures.append(executor.submit(processa_combinacao, metric, knum, img_matrix, x, y))
 
                 results = []
                 for future in as_completed(futures):
