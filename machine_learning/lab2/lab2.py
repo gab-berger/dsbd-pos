@@ -26,18 +26,26 @@ def load_data():
 	print('...data loaded!')
 	return dataset
 
-def get_classifier(method, **kwargs):
+def get_classifier(method):
     method = method.strip().lower()
-    if method == 'knn':
-        classifier = KNeighborsClassifier(**kwargs)
-    elif method == 'logreg':
-        classifier = linear_model.LogisticRegression(**kwargs)
+
+    if method == 'logreg':
+        classifier = linear_model.LogisticRegression()
     elif method == 'gauss':
-        classifier = GaussianNB(**kwargs)
+        classifier = GaussianNB()
     elif method == 'lindisc':
-        classifier = LinearDiscriminantAnalysis(**kwargs)
+        classifier = LinearDiscriminantAnalysis()
+    elif method == 'knn euclidean':
+        classifier = KNeighborsClassifier(n_neighbors=3, metric='euclidean')
+    elif method == 'knn minkowski':
+        classifier = KNeighborsClassifier(n_neighbors=3, metric='minkowski')
+    elif method == 'knn manhattan':
+        classifier = KNeighborsClassifier(n_neighbors=3, metric='manhattan')
     else:
-        raise ValueError(f"Método inválido: '{method}'. Escolha entre ['KNN', 'LogReg', 'Gauss', 'LinDisc'].")
+        raise ValueError(
+            f"Método inválido: '{method}'. Escolha entre ['LogReg', 'Gauss', 'LinDisc', 'KNN euclidean', 'KNN minkowski', 'KNN manhattan']"
+        )
+    
     return classifier
 
 def train_test_data(dataset:list, classifier_str, batchsize:int):
@@ -54,9 +62,9 @@ def train_test_data(dataset:list, classifier_str, batchsize:int):
 	X_test_dense = X_test.toarray()
 	y_pred = classifier.predict(X_test_dense) 
 	
-	acc = round(classifier.score(X_test_dense, y_test) * 100, 4)
+	acc = round(classifier.score(X_test_dense, y_test) * 100, 2)
 	cm = confusion_matrix(y_test, y_pred)    
-	total_time = round(time.time() - start_time, 4)
+	total_time = round(time.time() - start_time, 2)
     
 	print(f'[{classifier_str}] [{batchsize}] trained in {total_time}s -> acc = {acc}%')
 	return [classifier_str, int(batchsize), float(total_time), float(acc), cm]
@@ -66,7 +74,7 @@ if __name__ == "__main__":
 
 	dataset = load_data()
 	train_full_size = dataset[0].shape
-	methods = ['KNN','LogReg','Gauss','LinDisc']
+	methods = ['LogReg','Gauss','LinDisc','KNN euclidean','KNN minkowski','KNN manhattan']
 	
 	results = []
 	for method in methods:
